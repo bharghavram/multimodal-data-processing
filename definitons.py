@@ -57,7 +57,7 @@ class Reader:
     def video_reader(self,uploaded_file):
         video_bytes = uploaded_file.read()
 
-        client = genai.Client()
+        client = genai.Client(api_key="AIzaSyBxmzBpmBHR4B2Ym-mxc5FwM5mZRDaw6p0")
         response = client.models.generate_content(
             model='models/gemini-2.5-flash',
             contents=types.Content(
@@ -84,6 +84,18 @@ class Reader:
             )
         ]
         )
+        return response.text
+    def url_reader(self,url):
+        client = genai.Client(api_key="AIzaSyBxmzBpmBHR4B2Ym-mxc5FwM5mZRDaw6p0")
+        response = client.models.generate_content(
+            model='models/gemini-2.5-flash',
+            contents=types.Content(
+            parts=[
+            types.Part(
+                file_data=types.FileData(file_uri=url)
+            ),
+            types.Part(text='Please extract the text by considering both video and audio content.')
+        ]))
         return response.text
     
 class QA:
